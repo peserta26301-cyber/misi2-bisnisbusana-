@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Misi 2: Bisnis Busana</title>
+<style>
+:root{--bg1:#e3eeff;--bg2:#f6d9ea;--ink:#17325f;--cream:#fffaf0;--blue:#2457b8;--pink:#d9548f;--gold:#f2b632;--ok:#2e9b4f;--bad:#d44a3a;--shadow:rgba(30,40,80,.25);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#141d33;--bg2:#2e1a29;--ink:#eef2fb;--cream:#232a3b;--blue:#3a6fd6}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;color:var(--ink);background:linear-gradient(var(--bg1),var(--bg2));min-height:100vh}
+.wrap{max-width:560px;margin:0 auto;padding:14px}
+.badge{display:inline-block;background:var(--blue);color:#fff;border:3px solid var(--gold);border-radius:14px;padding:6px 14px;font-weight:800;line-height:1.1;box-shadow:0 3px 0 var(--shadow)}
+.badge small{display:block;font-weight:600;font-size:.7rem}
+.hero{display:flex;gap:10px;align-items:flex-start;margin-top:12px}
+.boy{font-size:3.4rem;line-height:1}
+.bubble,.how,.prog{background:var(--cream);border:3px solid var(--blue);border-radius:18px;padding:10px 14px;font-size:.92rem}
+.bubble{font-weight:700}
+.bubble b{color:var(--pink)}
+.how{border-color:var(--gold);margin-top:12px}
+.how h3{margin:0 0 4px;background:var(--pink);color:#fff;display:inline-block;padding:3px 12px;border-radius:8px;font-size:.9rem}
+.how ol{margin:6px 0 0;padding-left:20px}
+h4{margin:16px 0 6px}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bin{background:var(--cream);border:3px dashed var(--blue);border-radius:14px;min-height:110px;padding:8px;cursor:pointer;font:inherit;color:var(--ink);text-align:left;display:flex;flex-direction:column;gap:4px}
+.bin:hover{background:rgba(36,87,184,.12)}
+.bin .h{font-weight:800;color:var(--blue)}
+.bin .m{font-size:.72rem;background:rgba(46,155,79,.18);border-left:4px solid var(--ok);border-radius:6px;padding:4px 6px}
+.tray{display:flex;flex-direction:column;gap:8px}
+.tc{background:var(--cream);border:3px solid var(--gold);border-radius:12px;padding:10px 12px;font:inherit;font-size:.88rem;color:var(--ink);text-align:left;cursor:pointer}
+.tc.sel{background:var(--pink);color:#fff;border-color:var(--pink);transform:scale(1.02)}
+.shake{animation:sh .35s}
+@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.fb{margin-top:12px;padding:10px 12px;border-radius:12px;font-size:.9rem;min-height:44px;background:rgba(36,87,184,.12)}
+.fb.ok{background:rgba(46,155,79,.2)}
+.fb.no{background:rgba(212,74,58,.2)}
+.prog{margin-top:14px;display:flex;gap:12px;align-items:center}
+.stars{font-size:1.4rem;letter-spacing:3px}
+.prog p{margin:0}
+.btn{margin-top:10px;background:var(--pink);color:#fff;border:0;border-radius:12px;padding:10px 18px;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 3px 0 var(--shadow)}
+.btn:disabled{opacity:.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="badge"><small>Misi 2</small>Bisnis Busana</div>
+  <div class="hero">
+    <div class="boy">🧒</div>
+    <div class="bubble">👗 Selamat datang di <b>Bisnis Busana!</b> Seorang penjahit menulis panduan membuat kemeja, tetapi potongan teksnya tercecer. Bantu dia mencocokkan tiap potongan dengan strukturnya!</div>
+  </div>
+  <div class="how">
+    <h3>Cara Bermain:</h3>
+    <ol>
+      <li>Ketuk satu kartu potongan teks prosedur.</li>
+      <li>Ketuk kotak struktur yang menurutmu cocok.</li>
+      <li>Cocokkan semua 8 kartu dengan benar!</li>
+    </ol>
+  </div>
+  <h4>Struktur Teks Prosedur</h4>
+  <div class="bins" id="bins"></div>
+  <h4>Kartu Teks</h4>
+  <div class="tray" id="tray"></div>
+  <div class="fb" id="fb">Ketuk sebuah kartu untuk memulai.</div>
+  <div class="prog">
+    <div style="font-size:2rem" id="lock">🔒</div>
+    <div>
+      <div class="stars" id="stars">☆☆☆</div>
+      <p id="msg">Cocokkan semua kartu, maka kamu bisa lanjut ke <b>Misi 3</b>!</p>
+    </div>
+  </div>
+  <button class="btn" id="next" disabled>Lanjut ke Misi 3 ➜</button>
+</div>
+<script>
+var C=[["🎯","Tujuan"],["🧵","Bahan dan Alat"],["📝","Langkah-langkah"],["🏁","Penutup"]];
+var K=[
+{t:"Prosedur ini bertujuan memandu penjahit pemula membuat kemeja polos berukuran standar agar hasilnya rapi dan layak jual.",c:0,e:"Menyatakan maksud dibuatnya prosedur, ciri bagian tujuan."},
+{t:"Panduan ini disusun agar produksi satu lusin kemeja memiliki ukuran dan mutu yang seragam.",c:0,e:"Kata “agar” memperjelas tujuan prosedur."},
+{t:"Siapkan 2 meter kain katun poplin, 1 set kancing, kain keras (interfacing), benang sewarna, dan kapur jahit.",c:1,e:"Mendaftar benda yang harus disiapkan sebelum bekerja."},
+{t:"Alat yang diperlukan: mesin jahit, gunting kain, meteran, jarum pentul, dan setrika uap.",c:1,e:"Memuat daftar alat, bukan tindakan berurutan."},
+{t:"Pertama, ukur badan pelanggan, lalu gambar pola pada kertas sesuai ukuran tersebut.",c:2,e:"Kalimat perintah dengan konjungsi temporal (pertama, lalu) menandai langkah."},
+{t:"Jika kain mudah melar, tempelkan interfacing pada bagian kerah sebelum dijahit.",c:2,e:"Langkah bersyarat (percabangan) ciri prosedur kompleks, tetap termasuk langkah."},
+{t:"Dengan mengikuti seluruh tahapan tersebut, kemeja yang dihasilkan akan rapi, nyaman dipakai, dan siap dipasarkan.",c:3,e:"Menyimpulkan hasil akhir bila prosedur dilakukan dengan benar."},
+{t:"Agar awet, cuci kemeja dengan air dingin dan setrika dari sisi dalam kain.",c:3,e:"Berisi saran perawatan setelah hasil jadi, termasuk penutup."}
+];
+var sel=null,placed=0,errs=0,order=K.map(function(_,i){return i}).sort(function(){return Math.random()-.5}),done={};
+var bins=document.getElementById("bins"),tray=document.getElementById("tray"),fb=document.getElementById("fb");
+C.forEach(function(c,k){var b=document.createElement("button");b.className="bin";b.id="b"+k;b.innerHTML='<span class="h">'+c[0]+' '+c[1]+'</span>';b.onclick=function(){tryBin(k)};bins.appendChild(b)});
+function draw(){
+  tray.innerHTML="";
+  order.forEach(function(i){
+    if(done[i])return;
+    var b=document.createElement("button");b.className="tc"+(sel===i?" sel":"");b.id="k"+i;b.textContent=K[i].t;
+    b.onclick=function(){sel=i;fb.className="fb";fb.textContent="Sekarang ketuk struktur yang cocok.";draw()};
+    tray.appendChild(b);
+  });
+}
+function say(c,h){fb.className="fb "+c;fb.innerHTML=h}
+function tryBin(k){
+  if(sel===null){say("","Pilih dulu salah satu kartu teks.");return}
+  var d=K[sel];
+  if(d.c===k){
+    done[sel]=true;placed++;
+    var m=document.createElement("div");m.className="m";m.textContent=d.t;document.getElementById("b"+k).appendChild(m);
+    say("ok","✅ <b>Cocok!</b> "+d.e);sel=null;draw();
+    if(placed===K.length)win();
+  }else{
+    errs++;var el=document.getElementById("k"+sel);el.classList.add("shake");
+    say("no","❌ <b>Belum cocok.</b> Baca lagi kartunya, perhatikan isi dan kata kuncinya, lalu coba struktur lain.");
+  }
+}
+function win(){
+  var s=errs<=2?3:errs<=5?2:1;
+  document.getElementById("stars").textContent="★".repeat(s)+"☆".repeat(3-s);
+  document.getElementById("lock").textContent="🔓";
+  document.getElementById("msg").innerHTML="🎉 <b>Hebat!</b> Semua kartu cocok dengan "+errs+" kesalahan. Kamu siap lanjut ke <b>Misi 3</b>!";
+  document.getElementById("next").disabled=false;
+}
+document.getElementById("next").onclick=function(){alert("Menuju Misi 3…")};
+draw();
+</script>
+</body>
+</html>
